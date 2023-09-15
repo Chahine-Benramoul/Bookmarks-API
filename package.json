@@ -1,0 +1,18 @@
+{
+  "name": "bookmarks-server",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Travail pratique 1, gestionnaire de favoris",
+  "main": "BookmarksService.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chahine Benramoul",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
