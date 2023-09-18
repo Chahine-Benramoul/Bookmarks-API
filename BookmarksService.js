@@ -31,6 +31,21 @@ function response(res, status, data = null) {
     return true;
 }
 
+function getPayload(req, res) {
+    return new Promise(resolve => {
+        let body = [];
+        req.on('data', chunk => { body += chunk; });
+        req.on('end', () => {
+            let payload = null;
+            if (body.length > 0)
+                if (req.headers['content-type'] == "application/json")
+                    try { resolve(JSON.parse(body)); }
+                    catch (error) { console.log(error); }
+            resolve(null);
+        });
+    })
+}
+
 async function handleBookmarksRequest(req, res) {
     let bookmarksRepository = new Repository("./bookmarks.json");
     let bookmark = null;
@@ -55,7 +70,29 @@ async function handleBookmarksRequest(req, res) {
                 else
                     return response(res, 400);
         }
-    } else {
+    } 
+    else if(req.url == "/api/bookmarks/categories"){
+        if(req.method == "GET"){
+            const set = new Set();
+            bookmarksRepository.getAll().map((bookmark) => set.add(bookmark['Category']));
+            const categories = Array.from(set);
+            return response(res, 200,JSON.stringify(categories));
+        }
+    }
+    else if(req.url.includes("/api/bookmarks/categories/")){
+        let category = req.url.substring(req.url.lastIndexOf("/") + 1, req.url.length);
+        if(req.method == "GET"){
+                let bookmarksFiltredByCategory = [];
+                bookmarksRepository.getAll().forEach(bookmark => {
+                    if(bookmark["Category"].toLowerCase() == category.toLowerCase()){
+                       bookmarksFiltredByCategory.push(bookmark) ;
+                    }
+                });
+                console.log(bookmarksFiltredByCategory);
+            return response(res, 200,JSON.stringify(bookmarksFiltredByCategory));
+        }
+    }
+    else {
         if (req.url.includes("/api/bookmarks/")) {
             let id = parseInt(req.url.substring(req.url.lastIndexOf("/") + 1, req.url.length));
             switch (req.method) {
@@ -84,5 +121,5 @@ const server = createServer((req,res)=>{
         if(! handleBookmarksRequest(req,res))
             response(res,404)
 });
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT,()=>console.log(`Server running on port ${PORT}`));

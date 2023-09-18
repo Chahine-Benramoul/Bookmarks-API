@@ -1,8 +1,1 @@
-[
-    {
-        "Id": 1,
-        "Titre": "Collège Lionel-Groulx",
-        "Url": "www.clg.qc.ca",
-        "Categorie": "Cegep"
-    }
-]
+[{"Id":1,"Title":"Lionel Groulx","Url":"https://www.clg.qc.ca","Category":"Cegep"},{"Id":2,"Title":"Collège Momorency","Url":"https://www.cmontmorency.qc.ca/","Category":"Cegep"},{"Id":3,"Title":"Glitch","Url":"https://glitch.com/","Category":"Cloud"},{"Id":4,"Title":"GitHub","Url":"https://www.github.com","Category":"Cloud"}]
